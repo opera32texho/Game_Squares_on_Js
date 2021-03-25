@@ -21,6 +21,7 @@ class Square {
     ctx.fill();
     ctx.closePath();
   }
+  
 
 }
 
@@ -29,12 +30,18 @@ function spawnSquare(){
   let square = new Square(takeRandomWithCanvas);
   squares.push(square);
 }
-spawnSquare();
-spawnSquare();
-spawnSquare();
+
+function ultimateSpawnSquare(){
+ spawnSquare();
+ setTimeout(ultimateSpawnSquare,Math.floor(10 + Math.random() * Math.floor(990)));
+}
+
+ultimateSpawnSquare();
+
 function animate() {
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
+
   for(let i = 0; i < squares.length; i++){
     squares[i].step(ctx);
   }
