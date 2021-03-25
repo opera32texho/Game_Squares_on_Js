@@ -24,16 +24,21 @@ class Square {
 
 }
 
-let square = new Square(25);
-let square1 = new Square(80);
-squares.push(square);
-squares.push(square);
-
+function spawnSquare(){
+  let takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(615));
+  let square = new Square(takeRandomWithCanvas);
+  squares.push(square);
+}
+spawnSquare();
+spawnSquare();
+spawnSquare();
 function animate() {
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
-  square.step(ctx);
-  square1.step(ctx)
+  for(let i = 0; i < squares.length; i++){
+    squares[i].step(ctx);
+  }
+  
   
   
 //   function drawRect(){
