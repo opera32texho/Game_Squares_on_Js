@@ -1,15 +1,18 @@
 // тут может находится ваш код
 
-
 class Square {
   constructor(x) {
     this.y = -25;
     this.x = x;
   }
-  step(ctx) {
+  step(ctx, game) {
     this.clear(ctx);
     this.y = this.y + 1;
-    this.draw(ctx);
+    if(this.y > 510) {
+      game.squares.splice(game.squares.indexOf(this, 0), 1);
+    } else {
+      this.draw(ctx);
+    }    
   }
   clear(ctx) {
     ctx.clearRect(this.x, this.y, 25, 25);
@@ -22,7 +25,6 @@ class Square {
     ctx.closePath();
   }
 
-
 }
 class Game {
 
@@ -33,7 +35,7 @@ class Game {
     const ctx = canvas.getContext('2d');
 
     for (let i = 0; i < this.squares.length; i++) {
-      this.squares[i].step(ctx);
+      this.squares[i].step(ctx, this);
     }
     requestAnimationFrame(this.animate.bind(this));
   }
