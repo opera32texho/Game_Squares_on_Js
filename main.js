@@ -1,79 +1,90 @@
 // тут может находится ваш код
-let squares = [];
+
 
 class Square {
-  constructor(x){
+  constructor(x) {
     this.y = -25;
     this.x = x;
   }
-  step(ctx){
+  step(ctx) {
     this.clear(ctx);
     this.y = this.y + 1;
     this.draw(ctx);
   }
-  clear(ctx){
+  clear(ctx) {
     ctx.clearRect(this.x, this.y, 25, 25);
   }
-  draw(ctx){
+  draw(ctx) {
     ctx.beginPath();
     ctx.fillRect(this.x, this.y, 25, 25)
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
   }
-  
+
 
 }
+class Game {
 
-function spawnSquare(){
-  let takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(615));
-  let square = new Square(takeRandomWithCanvas);
-  squares.push(square);
-}
+  squares = [];
 
-function ultimateSpawnSquare(){
- spawnSquare();
- setTimeout(ultimateSpawnSquare,Math.floor(10 + Math.random() * Math.floor(990)));
-}
+  animate() {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
-ultimateSpawnSquare();
-
-function animate() {
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-
-  for(let i = 0; i < squares.length; i++){
-    squares[i].step(ctx);
+    for (let i = 0; i < this.squares.length; i++) {
+      this.squares[i].step(ctx);
+    }
+    requestAnimationFrame(this.animate.bind(this));
   }
-  
-  
-  
-//   function drawRect(){
-//     const takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(615));
-//     ctx.beginPath();
-//     ctx.fillRect(10, y, 25, 25)
-//     ctx.fillStyle = "black";
-//     ctx.fill();
-//     ctx.closePath();
-    
-//   }
+  spawnSquare() {
+    let takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(615));
 
-//  function draw(){
-//   ctx.clearRect(0, 0, canvas.width, canvas.height);
-//   drawRect();
-//   y = y + 1;
-  
-//  }
+    // определяет можно ли поместить новый квадрат на канвас
+    function instersectsWith(existingSquare, newSquare) {
+      if (existingSquare.x > newSquare.x + 50 || existingSquare.x < newSquare.x - 50) {
+        return false;
+      }
+      return true;
+    }
+    // квадрат который мы создали и хотим отрисовать
+    let square = new Square(takeRandomWithCanvas);
+    let intersects = false;
+
+    for (let i = 0; i < this.squares.length; i++) {
+      if (instersectsWith(this.squares[i], square)) {
+        intersects = true;
+        break;
+      }
+    }
+    if (intersects == false) {
+      this.squares.push(square);
+    }
+
+    setTimeout(this.spawnSquare.bind(this), Math.floor(10 + Math.random() * Math.floor(990)));
+  }
 
 
+  despawnSquare() {
 
-  // draw();
-  requestAnimationFrame(animate);
+  }
+  run() {
+    this.spawnSquare();
+    this.animate();
+  }
+
+  start() {
+
+  }
+  stop() {
+
+  }
 }
 
-// тут может находится ваш код
 
-document.body.onload = animate;
+let game = new Game();
+
+document.body.onload = game.run();
 
 
 // -25  to 475
