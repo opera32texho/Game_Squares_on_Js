@@ -1,6 +1,6 @@
 // тут может находится ваш код
-const squareHeight = 25;
-const squareWidth = 25;
+const squareHeight = 20;
+const squareWidth = 20;
 const maxHeightOfPlatfrom = 480;
 
 
@@ -38,16 +38,16 @@ class Game {
   ctx = canvas.getContext('2d');
   animation = true;
   squares = [];
-
+  count = 0;
   animate() {
-    
+
     for (let i = 0; i < this.squares.length; i++) {
       this.squares[i].step(this.ctx, this);
     }
     requestAnimationFrame(this.animate.bind(this));
   }
   spawnSquare() {
-    if(!this.animation) {
+    if (!this.animation) {
       return false;
     }
     let takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(615));
@@ -70,7 +70,6 @@ class Game {
     if (intersects == false) {
       this.squares.push(square);
     }
-    // console.log(this.squares);
     setTimeout(this.spawnSquare.bind(this), Math.floor(10 + Math.random() * Math.floor(990)));
   }
   //Получить координаты квадратиков в реальном времени
@@ -78,12 +77,15 @@ class Game {
   //Удалять квадрат из массива
   fieldClick(e) {
     for (let i = 0; i < this.squares.length; i++) {
+
       if (e.clientX >= this.squares[i].x && e.clientX <= this.squares[i].x + 30 && e.clientY >= this.squares[i].y && e.clientY <= this.squares[i].y + 30) {
+        this.count++;
         this.squares[i].clear(this.ctx);
         this.squares.splice(this.squares.indexOf(this.squares[i], 0), 1);
+        document.querySelector('#score').innerHTML = `${this.count}`;
+        break;
       }
     }
-
   }
 
   despawnSquare() {
@@ -93,24 +95,23 @@ class Game {
     document.querySelector('canvas').onclick = callback.bind(this);
   }
   run() {
+    document.querySelector('#score').innerHTML = `${this.count = 0}`;
+    this.animation = true;
     this.spawnSquare();
     this.animate();
     this.despawnSquare();
-    this.animation = true;
+
   }
 
   stop() {
     for (let i = 0; i < this.squares.length; i++) {
       this.squares[i].clear(this.ctx);
     }
-    
+
     this.squares = [];
     this.animation = false;
   }
-
-
 }
-
 
 document.body.onload = function () {
   let game = new Game();
@@ -118,48 +119,7 @@ document.body.onload = function () {
   document.querySelector('#start').onclick = function () {
     game.run();
   }
-  document.querySelector('#stop').onclick = function (){
+  document.querySelector('#stop').onclick = function () {
     game.stop();
   }
 }
-
-
-
-
-
-
-
-// function test() {
-//   asd.onclick = function(){
-//     alert('asd');
-//   }
-// }
-
-// class Test1 {
-//   name = 'Shit';
-// }
-
-// class Test2 {
-//   name = 'Fuck';
-// }
-
-// function printName() {
-//   alert(this.name);
-// }
-
-// let obj1 = new Test1();
-// let obj2 = new Test2();
-
-// printName();
-
-// let printTest1Name = printName.bind(obj1);
-// let printTest2Name = printName.bind(obj2);
-
-// printTest1Name();
-// printTest2Name();
-
-
-
-// -25  to 475
-
-// 5 to 610 
