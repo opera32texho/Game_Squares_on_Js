@@ -34,14 +34,15 @@ class Square {
 
 class Game {
 
+  canvas = document.getElementById('canvas');
+  ctx = canvas.getContext('2d');
   squares = [];
 
   animate() {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    
 
     for (let i = 0; i < this.squares.length; i++) {
-      this.squares[i].step(ctx, this);
+      this.squares[i].step(this.ctx, this);
     }
     requestAnimationFrame(this.animate.bind(this));
   }
@@ -72,10 +73,11 @@ class Game {
   //По клику сверять координаты мышки и квадрата по которому кликнул 
   //Удалять квадрат из массива
   fieldClick(e){
+    
     for (let i = 0; i < this.squares.length; i++) {
-        if (e.clientX >= this.squares[i].x && e.clientX < this.squares[i].x + 26 && e.clientY >= this.squares[i].y && e.clientY < this.squares[i].y + 26){
-          this.squares.splice(this.squares.indexOf(this.squares[i], 0), 1);
+        if (e.clientX >= this.squares[i].x && e.clientX <= this.squares[i].x + 30 && e.clientY >= this.squares[i].y && e.clientY <= this.squares[i].y + 30){
           this.squares[i].clear(this.ctx);
+          this.squares.splice(this.squares.indexOf(this.squares[i], 0), 1);
         }
     }
   
