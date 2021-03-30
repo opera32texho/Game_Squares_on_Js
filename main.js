@@ -8,10 +8,17 @@ class Square {
   constructor(x) {
     this.y = -25;
     this.x = x;
+    this.color = '#' + (Math.random().toString(16) + '000000').substring(2,8).toUpperCase();
+    function getRandomFloat(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    this.randomNumberOfStep = getRandomFloat(1, 3);
   }
+
   step(ctx, game) {
     this.clear(ctx);
-    this.y = this.y + 1;
+    
+    this.y = this.y + this.randomNumberOfStep;
     if (this.y > maxHeightOfPlatfrom + squareHeight) {
       game.squares.splice(game.squares.indexOf(this, 0), 1);
     } else {
@@ -24,7 +31,7 @@ class Square {
   draw(ctx) {
     ctx.beginPath();
     ctx.fillRect(this.x, this.y, squareWidth, squareHeight)
-    ctx.fillStyle = "black";
+    ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();
   }
