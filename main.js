@@ -36,18 +36,22 @@ class Game {
 
   canvas = document.getElementById('canvas');
   ctx = canvas.getContext('2d');
+  animation = true;
   squares = [];
 
   animate() {
     
-
     for (let i = 0; i < this.squares.length; i++) {
       this.squares[i].step(this.ctx, this);
     }
     requestAnimationFrame(this.animate.bind(this));
   }
   spawnSquare() {
+    if(!this.animation) {
+      return false;
+    }
     let takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(615));
+
     function instersectsWith(existingSquare, newSquare) {
       if (existingSquare.x > newSquare.x + 30 || existingSquare.x < newSquare.x - 30) {
         return false;
@@ -72,19 +76,18 @@ class Game {
   //Получить координаты квадратиков в реальном времени
   //По клику сверять координаты мышки и квадрата по которому кликнул 
   //Удалять квадрат из массива
-  fieldClick(e){
-    
+  fieldClick(e) {
     for (let i = 0; i < this.squares.length; i++) {
-        if (e.clientX >= this.squares[i].x && e.clientX <= this.squares[i].x + 30 && e.clientY >= this.squares[i].y && e.clientY <= this.squares[i].y + 30){
-          this.squares[i].clear(this.ctx);
-          this.squares.splice(this.squares.indexOf(this.squares[i], 0), 1);
-        }
+      if (e.clientX >= this.squares[i].x && e.clientX <= this.squares[i].x + 30 && e.clientY >= this.squares[i].y && e.clientY <= this.squares[i].y + 30) {
+        this.squares[i].clear(this.ctx);
+        this.squares.splice(this.squares.indexOf(this.squares[i], 0), 1);
+      }
     }
-  
+
   }
 
   despawnSquare() {
-    let callback = function(e) {
+    let callback = function (e) {
       this.fieldClick(e);
     };
     document.querySelector('canvas').onclick = callback.bind(this);
@@ -93,24 +96,38 @@ class Game {
     this.spawnSquare();
     this.animate();
     this.despawnSquare();
+    this.animation = true;
   }
 
-  start() {
-
-  }
   stop() {
-
+    for (let i = 0; i < this.squares.length; i++) {
+      this.squares[i].clear(this.ctx);
+    }
+    
+    this.squares = [];
+    this.animation = false;
   }
-  
+
 
 }
 
-//
+
+document.body.onload = function () {
+  let game = new Game();
+
+  document.querySelector('#start').onclick = function () {
+    game.run();
+  }
+  document.querySelector('#stop').onclick = function (){
+    game.stop();
+  }
+}
 
 
-let game = new Game();
 
-document.body.onload = game.run();
+
+
+
 
 // function test() {
 //   asd.onclick = function(){
