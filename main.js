@@ -57,7 +57,7 @@ class Game {
     if (!this.animation) {
       return false;
     }
-    let takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(615));
+    let takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(590));
 
     function instersectsWith(existingSquare, newSquare) {
       if (existingSquare.x > newSquare.x + 30 || existingSquare.x < newSquare.x - 30) {
