@@ -85,8 +85,10 @@ class Game {
   fieldClick(e) {
     for (let i = 0; i < this.squares.length; i++) {
 
-      if (e.clientX >= this.squares[i].x && e.clientX <= this.squares[i].x + 30 && e.clientY >= this.squares[i].y && e.clientY <= this.squares[i].y + 30) {
+      if ((e.clientX >= this.squares[i].x && this.squares[i].x >= e.clientX - squareWidth) && (e.clientY >= this.squares[i].y && this.squares[i].y >= e.clientY - squareHeight)) {
         this.count++;
+        console.log(e.clientY, e.clientX);
+        console.log(this.squares[i]);
         this.squares[i].clear(this.ctx);
         this.squares.splice(this.squares.indexOf(this.squares[i], 0), 1);
         document.querySelector('#score').innerHTML = `${this.count}`;
