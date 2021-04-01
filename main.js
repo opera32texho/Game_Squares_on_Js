@@ -2,6 +2,7 @@
 const squareHeight = 20;
 const squareWidth = 20;
 const maxHeightOfPlatfrom = 480;
+const distanceBetweenSquares = 10
 
 
 class Square {
@@ -60,7 +61,8 @@ class Game {
     let takeRandomWithCanvas = Math.floor(Math.random() * Math.floor(590));
 
     function instersectsWith(existingSquare, newSquare) {
-      if (existingSquare.x > newSquare.x + 30 || existingSquare.x < newSquare.x - 30) {
+      if (existingSquare.x > newSquare.x + squareWidth + distanceBetweenSquares || 
+          existingSquare.x < newSquare.x -  squareWidth - distanceBetweenSquares) {
         return false;
       }
       return true;
@@ -85,10 +87,9 @@ class Game {
   fieldClick(e) {
     for (let i = 0; i < this.squares.length; i++) {
 
-      if ((e.clientX >= this.squares[i].x && this.squares[i].x >= e.clientX - squareWidth) && (e.clientY >= this.squares[i].y && this.squares[i].y >= e.clientY - squareHeight)) {
+      if ((e.offsetX >= this.squares[i].x && this.squares[i].x >= e.offsetX - squareWidth) && 
+          (e.offsetY >= this.squares[i].y && this.squares[i].y >= e.offsetY - squareHeight)) {
         this.count++;
-        console.log(e.clientY, e.clientX);
-        console.log(this.squares[i]);
         this.squares[i].clear(this.ctx);
         this.squares.splice(this.squares.indexOf(this.squares[i], 0), 1);
         document.querySelector('#score').innerHTML = `${this.count}`;
