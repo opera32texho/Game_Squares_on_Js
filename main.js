@@ -31,8 +31,8 @@ class Square {
   }
   draw(ctx) {
     ctx.beginPath();
-    ctx.fillRect(this.x, this.y, squareWidth, squareHeight)
     ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, squareWidth, squareHeight);    
     ctx.fill();
     ctx.closePath();
   }
